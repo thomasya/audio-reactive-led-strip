@@ -2,7 +2,7 @@ import time
 import numpy as np
 import pyaudio
 import config
-
+import led
 
 def start_stream(callback):
     p = pyaudio.PyAudio()
@@ -25,6 +25,9 @@ def start_stream(callback):
             if time.time() > prev_ovf_time + 1:
                 prev_ovf_time = time.time()
                 print('Audio buffer has overflowed {} times'.format(overflows))
+        except KeyboardInterrupt:
+	        break
+    led.end()
     stream.stop_stream()
     stream.close()
     p.terminate()
